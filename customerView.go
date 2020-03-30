@@ -7,12 +7,10 @@ import (
 )
 
 type customerView struct {
-	key             string                   //接收用户输入
-	loop            bool                     //表示是否循环主菜单
-	customerService *service.CustomerService //增加一个字段customerService
+	key             string                  
+	loop            bool                     
+	customerService *service.CustomerService 
 }
-
-//显示所有用户信息
 func (this *customerView) list() {
 	//首先，获取当前所有用户的信息
 	customers := this.customerService.List()
@@ -23,8 +21,6 @@ func (this *customerView) list() {
 	}
 	fmt.Printf("----------客户列表完成----------\n")
 }
-
-//得到用户的输入信息，构建新的客户，并完成添加
 func (this *customerView) add() {
 	fmt.Println("----------添加客户----------")
 	fmt.Println("姓名：")
@@ -42,18 +38,14 @@ func (this *customerView) add() {
 	fmt.Println("电邮：")
 	email := ""
 	fmt.Scanln(&email)
-	//构建一个新的Customer实例
 	//注意：id号，没有让用户输入，因为id是唯一的，需要系统分配
 	customer := model.NewCustomer2(name, gender, age, phone, email)
-	//调用
 	if this.customerService.Add(customer) {
 		fmt.Println("----------添加成功----------")
 	} else {
 		fmt.Println("----------添加失败----------")
 	}
 }
-
-//得到用户的输入，并删除该ID对应的用户
 func (this *customerView) delete() {
 	fmt.Println("----------删除客户----------")
 	fmt.Println("请选择待删除客户编号(-1退出)")
@@ -79,8 +71,6 @@ func (this *customerView) delete() {
 	}
 	//如果ID不等于-1，那么就调用方法
 }
-
-//修改客户信息
 func (this *customerView) update() {
 	fmt.Println("----------修改客户----------")
 	fmt.Println("请选择待修改客户编号（-1退出）：")
@@ -163,13 +153,10 @@ func (this *customerView) mainView() {
 }
 
 func main() {
-	//这里完成对customerView结构体的customerService,
 	customerView := customerView{
 		key:  "",
 		loop: true,
 	}
-	//对customerView结构体的customerService字段初始化
 	customerView.customerService = service.NewCustomerService()
-	//显示主菜单
 	customerView.mainView()
 }
